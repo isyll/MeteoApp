@@ -19,7 +19,7 @@ class WeatherToday extends StatelessWidget {
         temperature: 19);
 
     return Container(
-      color: const Color(0x4f5563ff),
+      color: const Color.fromARGB(161, 102, 111, 210),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
