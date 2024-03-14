@@ -1,3 +1,4 @@
+import 'package:meteo_app/config/weather_defaults.dart';
 import 'package:meteo_app/enums/weather_code.dart';
 import 'package:meteo_app/types/weather.dart';
 import 'package:meteo_app/types/weather_data.dart';
@@ -22,6 +23,15 @@ class DataMapper {
         weather: weather,
         weatherCode: getWeatherCode(weatherId),
         weatherDate: date);
+  }
+
+  static List<WeatherData> getForecastData(Map<String, dynamic> json) {
+    final List<dynamic> data = json['list'];
+    final List<WeatherData> result = [];
+    for (var i = 0; i < WeatherDefaults.lastDaysNumber; i++) {
+      result.add(getWeatherData(data[i]));
+    }
+    return result;
   }
 
   static double convertKelvinToCelsius(double temperatureKelvin) =>

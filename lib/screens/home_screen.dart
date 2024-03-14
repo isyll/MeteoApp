@@ -13,9 +13,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     loadForecasts();
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [const WeatherToday(), WeatherForecast(forecasts: forecasts)],
+      children: [WeatherToday(), WeatherForecast()],
     );
   }
 

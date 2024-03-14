@@ -1,19 +1,58 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:meteo_app/services/api_service.dart';
+import 'package:meteo_app/services/data_mapper.dart';
 import 'package:meteo_app/services/date_service.dart';
 import 'package:meteo_app/services/weather_service.dart';
 import 'package:meteo_app/types/weather_data.dart';
 import 'package:intl/intl.dart';
 
-class WeatherForecast extends StatelessWidget {
-  const WeatherForecast({super.key, required this.forecasts});
+class WeatherForecast extends StatefulWidget {
+  const WeatherForecast({super.key});
 
-  final List<WeatherData> forecasts; // Prévisions des prochains jours
-  final TextStyle defaultTextStyle = const TextStyle(
+  @override
+  State<WeatherForecast> createState() => _WeatherForecastState();
+}
+
+class _WeatherForecastState extends State<WeatherForecast> {
+  List<WeatherData> _forecasts = [];
+  bool _isLoading = false;
+
+  final TextStyle _defaultTextStyle = const TextStyle(
       color: Colors.white,
       fontSize: 16.0,
       fontWeight: FontWeight.normal,
       fontFamily: 'Roboto',
       decoration: TextDecoration.none);
+
+  Future<void> fetchForecastData() async {
+    setState(() {
+      _isLoading = true;
+      _forecasts = [];
+    });
+
+    try {
+      final response = await ApiService.getDefaultForecastData();
+      if (response.statusCode == 200) {
+        setState(() {
+          final data = json.decode(response.body);
+          _forecasts = DataMapper.getForecastData(data);
+        });
+      } else {
+        throw Exception('Impossible de récupérer les prévissions météo');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error $error');
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +66,27 @@ class WeatherForecast extends StatelessWidget {
       ),
     );
 
+    List<Widget> children = [];
+
+    if (_isLoading) {
+      children = [const CircularProgressIndicator()];
+    } else if (_forecasts.isNotEmpty) {
+      children = getForecastWidgets();
+    } else {
+      fetchForecastData();
+    }
+
     return Expanded(
         child: Container(
       decoration: decoration,
       child: Column(
-        children: getForecastWidgets(),
+        children: children,
       ),
     ));
   }
 
   List<Widget> getForecastWidgets() {
-    return forecasts
+    return _forecasts
         .map((f) => Row(children: [_weatherSummary(f), _weatherDetails(f)]))
         .toList();
   }
@@ -111,7 +160,7 @@ class WeatherForecast extends StatelessWidget {
                 ),
                 Text(
                   WeatherService.windSpeed(weatherData.weather.windSpeed),
-                  style: defaultTextStyle,
+                  style: _defaultTextStyle,
                 ),
               ]),
             ),
@@ -124,7 +173,7 @@ class WeatherForecast extends StatelessWidget {
                   ),
                   Text(
                     WeatherService.airHumidity(weatherData.weather.airHumidity),
-                    style: defaultTextStyle,
+                    style: _defaultTextStyle,
                   )
                 ])),
             Column(
@@ -136,7 +185,7 @@ class WeatherForecast extends StatelessWidget {
                 Text(
                   WeatherService.chanceOfPrecipitations(
                       weatherData.weather.chanceOfPrecipitations),
-                  style: defaultTextStyle,
+                  style: _defaultTextStyle,
                 ),
               ],
             )
