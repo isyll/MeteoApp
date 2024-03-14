@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app/enums/weather_code.dart';
 
 class WeatherService {
-  Image getWeatherIcon(WeatherCode code) {
+  static Image getWeatherIcon(WeatherCode code, {double width = 140}) {
     final String pathName = 'assets/images/${code.name}.png';
-    return Image.asset(pathName, width: 140);
+    return Image.asset(pathName, width: width);
   }
 
 //   Image fromString(String code) {
@@ -13,7 +13,7 @@ class WeatherService {
 //     }
 //   }
 
-  String getWeatherLabel(WeatherCode code) {
+  static String getWeatherLabel(WeatherCode code) {
     switch (code) {
       case WeatherCode.sunny:
         return 'Soleil';
@@ -25,4 +25,12 @@ class WeatherService {
         return 'Nuageux';
     }
   }
+
+  static String temperature(int temperature) => '$temperature °C';
+
+  static String windSpeed(int windSpeed) => '$windSpeed Km/h';
+
+  static String chanceOfPrecipitations(int cop) => '$cop Km/h';
+
+  static String airHumidity(int airHumidity) => '$airHumidity Km/h';
 }

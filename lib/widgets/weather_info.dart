@@ -3,7 +3,7 @@ import 'package:meteo_app/enums/weather_code.dart';
 import 'package:meteo_app/services/weather_service.dart';
 
 class WeatherInfo extends StatelessWidget {
-  WeatherInfo(
+  const WeatherInfo(
       {super.key,
       required this.country,
       required this.city,
@@ -15,8 +15,6 @@ class WeatherInfo extends StatelessWidget {
   final WeatherCode weatherCode;
   final int temperature;
 
-  final WeatherService weatherService = WeatherService();
-
   final TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white,
       fontSize: 24.0,
@@ -27,7 +25,7 @@ class WeatherInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weatherLabel = weatherService.getWeatherLabel(weatherCode);
+    final weatherLabel = WeatherService.getWeatherLabel(weatherCode);
     return Column(children: [
       Text(
         country,
