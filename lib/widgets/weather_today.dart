@@ -17,15 +17,16 @@ class WeatherToday extends StatelessWidget {
         temperature: 19);
 
     return Container(
+      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
       color: const Color(0xff4f5563),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-              padding: const EdgeInsets.all(43.0),
+              padding: const EdgeInsets.all(32.0),
               child: WeatherService.getWeatherIcon(WeatherCode.sunny)),
           const Padding(
-            padding: EdgeInsets.all(43.0),
+            padding: EdgeInsets.all(32.0),
             child: weatherInfo,
           )
         ],

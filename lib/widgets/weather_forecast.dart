@@ -10,9 +10,8 @@ class WeatherForecast extends StatelessWidget {
   final List<WeatherData> forecasts; // Prévision pour les prochains jours
   final TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white,
-      fontSize: 11.0,
+      fontSize: 14.0,
       fontWeight: FontWeight.normal,
-      letterSpacing: 1.5,
       fontFamily: 'Roboto',
       decoration: TextDecoration.none);
 
