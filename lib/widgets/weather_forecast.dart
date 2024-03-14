@@ -19,7 +19,7 @@ class WeatherForecast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const BoxDecoration decoration = BoxDecoration(
-      color: Color(0xff313747),
+      color: Color(0xff3c4252),
       border: Border(
         top: BorderSide(
           color: Colors.white,
