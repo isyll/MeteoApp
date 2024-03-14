@@ -105,7 +105,10 @@ class _ForecastItem extends StatelessWidget {
                         weatherData.weatherCode,
                         width: 52.0)),
                 spacing,
-                Text(weatherData.weather.tempsToStr()),
+                Text(
+                  weatherData.weather.tempsToStr(),
+                  style: const TextStyle(fontSize: 16),
+                ),
                 spacing,
               ],
             )));

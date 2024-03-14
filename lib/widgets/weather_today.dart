@@ -67,7 +67,7 @@ class WeatherTodayState extends State<WeatherToday> {
       widget = Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+            padding: const EdgeInsets.only(top: 0.0, bottom: 10.0),
             color: AppColors.primary,
             child: Row(children: [
               Column(
@@ -80,9 +80,9 @@ class WeatherTodayState extends State<WeatherToday> {
                     child: weatherInfo,
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(left: 28, bottom: 24),
+                      padding: const EdgeInsets.only(left: 24, bottom: 20),
                       child: WeatherService.getWeatherIcon(WeatherCode.sunny,
-                          width: 160)),
+                          width: 140)),
                 ],
               ),
               Column(
@@ -138,7 +138,7 @@ class _WeatherInfo extends StatelessWidget {
 
   final TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white,
-      fontSize: 28.0,
+      fontSize: 22.0,
       fontWeight: FontWeight.normal,
       fontFamily: ThemeConfig.fontFamily,
       decoration: TextDecoration.none);
@@ -171,7 +171,7 @@ class _WeatherTodayInfo extends StatelessWidget {
   final WeatherData weatherData;
 
   final _labelSize = 16.0;
-  final _valueSize = 28.0;
+  final _valueSize = 24.0;
 
   @override
   Widget build(BuildContext context) {
