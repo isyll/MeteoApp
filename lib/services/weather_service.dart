@@ -23,6 +23,8 @@ class WeatherService {
         return 'Pluvieux';
       case WeatherCode.cloud:
         return 'Nuageux';
+      case WeatherCode.stormy:
+        return 'Orage';
     }
   }
 

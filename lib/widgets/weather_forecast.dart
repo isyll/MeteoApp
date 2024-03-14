@@ -45,7 +45,7 @@ class WeatherForecast extends StatelessWidget {
   Widget _weatherSummary(WeatherData wd) {
     return Container(
         decoration: const BoxDecoration(
-            border: Border(right: BorderSide(color: Colors.white, width: 2))),
+            border: Border(right: BorderSide(color: Colors.white, width: 1))),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(children: [
