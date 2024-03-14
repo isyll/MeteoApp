@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:meteo_app/enums/weather_code.dart';
 import 'package:meteo_app/services/weather_service.dart';
 
@@ -28,14 +27,17 @@ class WeatherInfo extends StatelessWidget {
     final weatherLabel = WeatherService.getWeatherLabel(weatherCode);
     return Align(
         alignment: Alignment.topLeft,
-        child: Column(children: [
-          Text(country,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Roboto',
-                  decoration: TextDecoration.none)),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 28, bottom: 4),
+            child: Text(country,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Roboto',
+                    decoration: TextDecoration.none)),
+          ),
           Text(
             city,
             style: const TextStyle(
