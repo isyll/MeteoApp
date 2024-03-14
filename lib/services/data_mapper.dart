@@ -3,12 +3,12 @@ import 'package:meteo_app/types/weather.dart';
 import 'package:meteo_app/types/weather_data.dart';
 
 class DataMapper {
-  static WeatherData weatherInfo(Map<String, dynamic> json) {
+  static WeatherData getWeatherData(Map<String, dynamic> json) {
     final double temp = json['main']['temp'];
     final double humidity = json['main']['temp'];
     final double windSpeed = json['wind']['speed'];
-    final double precipitations = json['precipitation']['value'];
-    final int weatherId = json['weather']['id'];
+    const double precipitations = 14.0;
+    final int weatherId = json['weather'][0]['id'];
     final int timestamp = json['dt'];
     final DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 

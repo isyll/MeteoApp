@@ -5,11 +5,11 @@ import 'package:meteo_app/config/weather_defaults.dart';
 class ApiService {
   static get url => '${Constants.apiUrl}?APPID=${Constants.apiKey}';
 
-  Future<dynamic> getDefaultWeatherData() {
+  static Future<http.Response> getDefaultWeatherData() {
     return getWeatherData(WeatherDefaults.country, WeatherDefaults.city);
   }
 
-  Future<dynamic> getWeatherData(String country, String city) {
-    return http.get(url + '&$city,$country');
+  static Future<http.Response> getWeatherData(String country, String city) {
+    return http.get(Uri.parse(url + '&q=$city,$country'));
   }
 }

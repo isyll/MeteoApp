@@ -42,7 +42,7 @@ class WeatherForecast extends StatelessWidget {
         .toList();
   }
 
-  Widget _weatherSummary(WeatherData wd) {
+  Widget _weatherSummary(WeatherData weatherData) {
     return Container(
         decoration: const BoxDecoration(
             border: Border(right: BorderSide(color: Colors.white, width: 1))),
@@ -53,7 +53,7 @@ class WeatherForecast extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  DateService.weekday(wd.weatherDate.weekday),
+                  DateService.weekday(weatherData.weatherDate.weekday),
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -62,7 +62,7 @@ class WeatherForecast extends StatelessWidget {
                       decoration: TextDecoration.none),
                 ),
                 Text(
-                  DateFormat('HH:mm').format(wd.weatherDate),
+                  DateFormat('HH:mm').format(weatherData.weatherDate),
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24.0,
@@ -74,17 +74,17 @@ class WeatherForecast extends StatelessWidget {
             ),
             Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child:
-                    WeatherService.getWeatherIcon(wd.weatherCode, width: 90.0))
+                child: WeatherService.getWeatherIcon(weatherData.weatherCode,
+                    width: 90.0))
           ]),
         ));
   }
 
-  Widget _weatherDetails(WeatherData wd) {
+  Widget _weatherDetails(WeatherData weatherData) {
     return Padding(
       padding: const EdgeInsets.only(left: 14.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(WeatherService.getWeatherLabel(wd.weatherCode),
+        Text(WeatherService.getWeatherLabel(weatherData.weatherCode),
             style: const TextStyle(
                 fontSize: 28.0,
                 color: Colors.white,
@@ -92,7 +92,7 @@ class WeatherForecast extends StatelessWidget {
                 fontFamily: 'Roboto',
                 decoration: TextDecoration.none)),
         Text(
-          WeatherService.temperature(wd.weather.temperature),
+          WeatherService.temperature(weatherData.weather.temperature),
           style: const TextStyle(
               fontSize: 20.0,
               color: Colors.white,
@@ -110,7 +110,7 @@ class WeatherForecast extends StatelessWidget {
                   width: 22,
                 ),
                 Text(
-                  WeatherService.windSpeed(wd.weather.windSpeed),
+                  WeatherService.windSpeed(weatherData.weather.windSpeed),
                   style: defaultTextStyle,
                 ),
               ]),
@@ -123,7 +123,7 @@ class WeatherForecast extends StatelessWidget {
                     width: 22,
                   ),
                   Text(
-                    WeatherService.airHumidity(wd.weather.airHumidity),
+                    WeatherService.airHumidity(weatherData.weather.airHumidity),
                     style: defaultTextStyle,
                   )
                 ])),
@@ -135,7 +135,7 @@ class WeatherForecast extends StatelessWidget {
                 ),
                 Text(
                   WeatherService.chanceOfPrecipitations(
-                      wd.weather.chanceOfPrecipitations),
+                      weatherData.weather.chanceOfPrecipitations),
                   style: defaultTextStyle,
                 ),
               ],

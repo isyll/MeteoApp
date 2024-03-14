@@ -1,4 +1,5 @@
 class WeatherDefaults {
-  static const country = 'Dakar';
-  static const city = 'sn';
+  static const country = 'sn';
+  static const city = 'Dakar';
+  static const countryName = 'Sénégal';
 }
