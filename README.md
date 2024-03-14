@@ -1,6 +1,6 @@
 # meteo_app
 
-A new Flutter project.
+Une simple application météo en Flutter.
 
 ## Getting Started
 
