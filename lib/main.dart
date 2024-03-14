@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Application Météo',
         theme: ThemeConfig.appTheme,
-        home: HomeScreen());
+        home: Scaffold(
+          body: HomeScreen(),
+        ));
   }
 }

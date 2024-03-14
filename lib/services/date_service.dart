@@ -27,4 +27,8 @@ class DateService {
     return StringUtils.capitalize(
         DateFormat('EEEE, d MMMM', 'fr_FR').format(date));
   }
+
+  static String formatHourMinutes(DateTime date) {
+    return DateFormat('HH:mm').format(date);
+  }
 }

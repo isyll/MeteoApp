@@ -6,23 +6,44 @@ import 'package:meteo_app/types/weather_data.dart';
 class DataMapper {
   static WeatherData getWeatherData(Map<String, dynamic> json) {
     final double temp = json['main']['temp'];
+    final double minTemp = json['main']['temp_min'];
+    final double maxTemp = json['main']['temp_max'];
     final double humidity = json['main']['temp'];
     final double windSpeed = json['wind']['speed'];
-    const double precipitations = 14.0;
     final int weatherId = json['weather'][0]['id'];
-    final int timestamp = json['dt'];
-    final DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    final DateTime date = millisecondsToDate(json['dt']);
+
+    DateTime sunrise = DateTime.now();
+    DateTime sunset = DateTime.now();
+    if (keyExists(json['sys'], 'sunrise')) {
+      sunrise = millisecondsToDate(json['sys']['sunrise']);
+    }
+    if (keyExists(json['sys'], 'sunset')) {
+      sunset = millisecondsToDate(json['sys']['sunset']);
+    }
 
     final weather = Weather(
         temperature: convertKelvinToCelsius(temp).toInt(),
         windSpeed: windSpeed.toInt(),
-        chanceOfPrecipitations: precipitations.toInt(),
-        airHumidity: humidity.toInt());
+        airHumidity: humidity.toInt(),
+        minTemp: minTemp.toInt(),
+        maxTemp: maxTemp.toInt());
+
+    weather.sunrise = sunrise;
+    weather.sunrise = sunset;
 
     return WeatherData(
         weather: weather,
         weatherCode: getWeatherCode(weatherId),
         weatherDate: date);
+  }
+
+  static bool keyExists(dynamic json, String key) {
+    return json != null && json is Map && json.containsKey(key);
+  }
+
+  static DateTime millisecondsToDate(int timestamp) {
+    return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
   }
 
   static List<WeatherData> getForecastData(Map<String, dynamic> json) {

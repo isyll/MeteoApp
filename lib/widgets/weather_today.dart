@@ -51,9 +51,10 @@ class WeatherTodayState extends State<WeatherToday> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
+    Widget widget = const Text('Chargement...');
+
     if (_isLoading) {
-      children = [const CircularProgressIndicator()];
+      widget = const CircularProgressIndicator();
     } else if (_weatherData != null) {
       final weatherInfo = _WeatherInfo(
         country: WeatherDefaults.countryName,
@@ -63,56 +64,61 @@ class WeatherTodayState extends State<WeatherToday> {
         date: _weatherData!.weatherDate,
       );
 
-      children = [
-        Padding(
-          padding: const EdgeInsets.only(top: 32, bottom: 32, left: 32),
-          child: weatherInfo,
-        ),
-        Padding(
-            padding: const EdgeInsets.only(left: 28, bottom: 24),
-            child:
-                WeatherService.getWeatherIcon(WeatherCode.sunny, width: 160)),
-      ];
+      widget = Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+            color: AppColors.primary,
+            child: Row(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 32, bottom: 32, left: 32),
+                    child: weatherInfo,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 28, bottom: 24),
+                      child: WeatherService.getWeatherIcon(WeatherCode.sunny,
+                          width: 160)),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    WeatherService.temperature(
+                        _weatherData!.weather.temperature),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 50,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: ThemeConfig.fontFamily,
+                        decoration: TextDecoration.none),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    WeatherService.getWeatherLabel(_weatherData!.weatherCode),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: ThemeConfig.fontFamily,
+                        decoration: TextDecoration.none),
+                  )
+                ],
+              )
+            ]),
+          ),
+          _WeatherTodayInfo(weatherData: _weatherData!)
+        ],
+      );
     } else {
       fetchWeatherData();
     }
 
-    return Container(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-      color: AppColors.primary,
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
-          ),
-          Column(
-            children: [
-              Text(
-                WeatherService.temperature(_weatherData!.weather.temperature),
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 50,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: ThemeConfig.fontFamily,
-                    decoration: TextDecoration.none),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                WeatherService.getWeatherLabel(_weatherData!.weatherCode),
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: ThemeConfig.fontFamily,
-                    decoration: TextDecoration.none),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+    return widget;
   }
 }
 
@@ -132,7 +138,7 @@ class _WeatherInfo extends StatelessWidget {
 
   final TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white,
-      fontSize: 22.0,
+      fontSize: 28.0,
       fontWeight: FontWeight.normal,
       fontFamily: ThemeConfig.fontFamily,
       decoration: TextDecoration.none);
@@ -154,6 +160,135 @@ class _WeatherInfo extends StatelessWidget {
           Text(
             DateService.formatDate(date),
             style: defaultTextStyle,
+          )
+        ]));
+  }
+}
+
+class _WeatherTodayInfo extends StatelessWidget {
+  const _WeatherTodayInfo({super.key, required this.weatherData});
+
+  final WeatherData weatherData;
+
+  final _labelSize = 16.0;
+  final _valueSize = 28.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 38),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      WeatherService.temperature(
+                          DataMapper.convertKelvinToCelsius(
+                                  weatherData.weather.maxTemp.toDouble())
+                              .toInt()),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Max',
+                      style: TextStyle(fontSize: _labelSize),
+                    )
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      WeatherService.windSpeed(
+                          DataMapper.convertKelvinToCelsius(
+                                  weatherData.weather.windSpeed.toDouble())
+                              .toInt()),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Vent',
+                      style: TextStyle(fontSize: _labelSize),
+                    )
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      DateService.formatHourMinutes(
+                          weatherData.weather.sunrise),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Levée du soleil',
+                      style: TextStyle(fontSize: _labelSize),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      WeatherService.temperature(
+                          DataMapper.convertKelvinToCelsius(
+                                  weatherData.weather.minTemp.toDouble())
+                              .toInt()),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Min',
+                      style: TextStyle(fontSize: _labelSize),
+                    )
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      WeatherService.airHumidity(
+                          weatherData.weather.airHumidity),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Humidité',
+                      style: TextStyle(fontSize: _labelSize),
+                    )
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      DateService.formatHourMinutes(weatherData.weather.sunset),
+                      style: TextStyle(fontSize: _valueSize),
+                    ),
+                    Text(
+                      'Coucher du soleil',
+                      style: TextStyle(fontSize: _labelSize),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
+            ],
           )
         ]));
   }

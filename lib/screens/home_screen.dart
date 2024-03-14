@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         ),
         const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [WeatherToday()],
+          children: [WeatherToday(), WeatherForecast()],
         )
       ],
     );
