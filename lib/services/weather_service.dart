@@ -30,7 +30,7 @@ class WeatherService {
 
   static String windSpeed(int windSpeed) => '$windSpeed Km/h';
 
-  static String chanceOfPrecipitations(int cop) => '$cop Km/h';
+  static String chanceOfPrecipitations(int cop) => '$cop %';
 
-  static String airHumidity(int airHumidity) => '$airHumidity Km/h';
+  static String airHumidity(int airHumidity) => '$airHumidity %';
 }

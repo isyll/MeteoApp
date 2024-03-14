@@ -7,10 +7,10 @@ import 'package:intl/intl.dart';
 class WeatherForecast extends StatelessWidget {
   const WeatherForecast({super.key, required this.forecasts});
 
-  final List<WeatherData> forecasts; // Prévision pour les prochains jours
+  final List<WeatherData> forecasts; // Prévisions des prochains jours
   final TextStyle defaultTextStyle = const TextStyle(
       color: Colors.white,
-      fontSize: 14.0,
+      fontSize: 16.0,
       fontWeight: FontWeight.normal,
       fontFamily: 'Roboto',
       decoration: TextDecoration.none);
@@ -37,54 +37,112 @@ class WeatherForecast extends StatelessWidget {
   }
 
   List<Widget> getForecastWidgets() {
-    return forecasts.map((f) {
-      return Row(children: [
-        Column(
-          children: [
-            Text(
-              DateService.weekday(f.weatherDate.weekday),
-              style: defaultTextStyle,
+    return forecasts
+        .map((f) => Row(children: [_weatherSummary(f), _weatherDetails(f)]))
+        .toList();
+  }
+
+  Widget _weatherSummary(WeatherData wd) {
+    return Container(
+        decoration: const BoxDecoration(
+            border: Border(right: BorderSide(color: Colors.white, width: 2))),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateService.weekday(wd.weatherDate.weekday),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Roboto',
+                      decoration: TextDecoration.none),
+                ),
+                Text(
+                  DateFormat('HH:mm').format(wd.weatherDate),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Roboto',
+                      decoration: TextDecoration.none),
+                ),
+              ],
             ),
-            Text(
-              DateFormat('HH:mm').format(f.weatherDate),
-              style: defaultTextStyle,
-            ),
-          ],
-        ),
-        WeatherService.getWeatherIcon(f.weatherCode, width: 84.0),
-        const VerticalDivider(
-          color: Colors.white,
-          thickness: 2,
-          width: 20,
-          indent: 10,
-          endIndent: 10,
-        ),
+            Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child:
+                    WeatherService.getWeatherIcon(wd.weatherCode, width: 90.0))
+          ]),
+        ));
+  }
+
+  Widget _weatherDetails(WeatherData wd) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 14.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(WeatherService.getWeatherLabel(wd.weatherCode),
+            style: const TextStyle(
+                fontSize: 28.0,
+                color: Colors.white,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'Roboto',
+                decoration: TextDecoration.none)),
         Text(
-          WeatherService.getWeatherLabel(f.weatherCode),
-          style: defaultTextStyle,
-        ),
-        Text(
-          WeatherService.temperature(f.weather.temperature),
-          style: defaultTextStyle,
+          WeatherService.temperature(wd.weather.temperature),
+          style: const TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Roboto',
+              decoration: TextDecoration.none),
         ),
         Row(
           children: [
-            Text(
-              WeatherService.windSpeed(f.weather.windSpeed),
-              style: defaultTextStyle,
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Column(children: [
+                Image.asset(
+                  'assets/images/wind_speed.png',
+                  width: 22,
+                ),
+                Text(
+                  WeatherService.windSpeed(wd.weather.windSpeed),
+                  style: defaultTextStyle,
+                ),
+              ]),
             ),
-            Text(
-              WeatherService.airHumidity(f.weather.airHumidity),
-              style: defaultTextStyle,
-            ),
-            Text(
-              WeatherService.chanceOfPrecipitations(
-                  f.weather.chanceOfPrecipitations),
-              style: defaultTextStyle,
-            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Column(children: [
+                  Image.asset(
+                    'assets/images/humidity.png',
+                    width: 22,
+                  ),
+                  Text(
+                    WeatherService.airHumidity(wd.weather.airHumidity),
+                    style: defaultTextStyle,
+                  )
+                ])),
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/precipitations.png',
+                  width: 22,
+                ),
+                Text(
+                  WeatherService.chanceOfPrecipitations(
+                      wd.weather.chanceOfPrecipitations),
+                  style: defaultTextStyle,
+                ),
+              ],
+            )
           ],
         )
-      ]);
-    }).toList();
+      ]),
+    );
   }
 }
