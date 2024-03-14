@@ -2,15 +2,8 @@
 
 Une simple application météo en Flutter.
 
-## Getting Started
+## Lancement du projet
 
-This project is a starting point for a Flutter application.
+Pour lancer le projet, allez à l'URL suivante [Installation](https://docs.flutter.dev/get-started/install).
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Puis lancer le projet avec flutter run après avoir sélectionné un device.
