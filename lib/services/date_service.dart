@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:meteo_app/utils/string.dart';
+
 class DateService {
   static String weekday(int day) {
     switch (day) {
@@ -18,5 +21,10 @@ class DateService {
       default:
         return 'unknown';
     }
+  }
+
+  static String formatDate(DateTime date) {
+    return StringUtils.capitalize(
+        DateFormat('EEEE, d MMMM', 'fr_FR').format(date));
   }
 }
