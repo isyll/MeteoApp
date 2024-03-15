@@ -5,10 +5,10 @@ import 'package:meteo_app/types/weather_data.dart';
 
 class DataMapper {
   static WeatherData getWeatherData(Map<String, dynamic> json) {
-    final double temp = json['main']['temp'];
+    final double temp = json['main']['temp'] as double;
     final double minTemp = json['main']['temp_min'];
     final double maxTemp = json['main']['temp_max'];
-    final double humidity = json['main']['temp'];
+    final double humidity = json['main']['temp'] as double;
     final double windSpeed = json['wind']['speed'];
     final int weatherId = json['weather'][0]['id'];
     final DateTime date = millisecondsToDate(json['dt']);

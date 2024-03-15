@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:meteo_app/config/app_colors.dart';
 import 'package:meteo_app/config/theme_config.dart';
 import 'package:meteo_app/config/weather_defaults.dart';
@@ -13,13 +14,15 @@ import 'package:meteo_app/services/weather_service.dart';
 import 'package:meteo_app/types/weather_data.dart';
 
 class WeatherToday extends StatefulWidget {
-  const WeatherToday({super.key});
+  const WeatherToday({super.key, required this.city});
+
+  final String city;
 
   @override
-  WeatherTodayState createState() => WeatherTodayState();
+  State<WeatherToday> createState() => _WeatherTodayState();
 }
 
-class WeatherTodayState extends State<WeatherToday> {
+class _WeatherTodayState extends State<WeatherToday> {
   WeatherData? _weatherData;
   bool _isLoading = false;
 
@@ -29,7 +32,13 @@ class WeatherTodayState extends State<WeatherToday> {
       _isLoading = true;
     });
     try {
-      final response = await ApiService.getDefaultWeatherData();
+      Response response;
+
+      if (widget.city.isNotEmpty) {
+        response = await ApiService.searchCity(widget.city);
+      } else {
+        response = await ApiService.getDefaultWeatherData();
+      }
       if (response.statusCode == 200) {
         setState(() {
           final data = json.decode(response.body);
@@ -51,20 +60,20 @@ class WeatherTodayState extends State<WeatherToday> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = const Text('Chargement...');
+    Widget w = const Text('Chargement...');
 
     if (_isLoading) {
-      widget = const CircularProgressIndicator();
+      w = const CircularProgressIndicator();
     } else if (_weatherData != null) {
       final weatherInfo = _WeatherInfo(
-        country: WeatherDefaults.countryName,
-        city: WeatherDefaults.city,
+        country: widget.city.isEmpty ? WeatherDefaults.countryName : '',
+        city: widget.city.isEmpty ? WeatherDefaults.city : widget.city,
         weatherCode: _weatherData!.weatherCode,
         temperature: _weatherData!.weather.temperature,
         date: _weatherData!.weatherDate,
       );
 
-      widget = Column(
+      w = Column(
         children: [
           Container(
             padding: const EdgeInsets.only(top: 0.0, bottom: 10.0),
@@ -118,7 +127,7 @@ class WeatherTodayState extends State<WeatherToday> {
       fetchWeatherData();
     }
 
-    return widget;
+    return w;
   }
 }
 

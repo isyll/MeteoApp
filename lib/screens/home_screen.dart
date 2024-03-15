@@ -6,9 +6,10 @@ import 'package:meteo_app/widgets/weather_forecast.dart';
 import 'package:meteo_app/widgets/weather_today.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  HomeScreen({super.key, required this.city});
 
   final List<WeatherData> forecasts = [];
+  final String city;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class HomeScreen extends StatelessWidget {
             color: AppColors.secondary,
           ),
         ),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [WeatherToday(), WeatherForecast()],
+          children: [WeatherToday(city: city), WeatherForecast()],
         )
       ],
     );
